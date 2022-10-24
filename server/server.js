@@ -18,6 +18,16 @@ client.on('connect', function (err) {
 const app = express();
 const port = 5001;
 
+const getAllCards = async () => {
+	const { keys } = await client.scan(0, 'MATCH *card*');
+	const cards = [];
+	for (let key of keys) {
+		const value = await client.get(key);
+		cards.push(JSON.parse(value));
+	}
+	return cards;
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -26,16 +36,59 @@ app.get('/', (req, res) => {
 });
 
 // GET
-// POST
-// PUT
-// DELETE
-
-// EXAMPLE
 app.get('/getCards', async (req, res) => {
-	// Please finish the logic in retrieving the cards from redis
-	await client.set('key', JSON.stringify({ hello: 'world' }));
-	const value = await client.get('key');
-	res.send({ value: JSON.parse(value) });
+	const cards = await getAllCards();
+	console.log(cards);
+	res.status(200).send(cards);
 });
+
+// POST
+app.post('/postCard', async (req, res) => {
+	const { productName } = req.body;
+	console.log(req.body);
+	console.log(productName);
+	const { keys } = await client.scan(0, 'MATCH *card*');
+	if (keys.includes(`card:${productName}`)) {
+		res.status(404).send('Card already exists!');
+	} else {
+		await client.set(`card:${productName}`, JSON.stringify(req.body));
+		const cards = await getAllCards();
+		res.status(201).send({
+			newCard: req.body,
+			cards: cards
+		 });
+	}
+});
+
+// PUT
+app.put('/editCard', async (req, res) => {
+	const { productImg, oldProductName, newProductName, description, creationTime } = req.body;
+	const card = {
+		productImg,
+		productName: newProductName,
+		description,
+		creationTime
+	}
+	await client.rename(`card:${oldProductName}`, `card:${newProductName}`);
+	await client.set(`card:${newProductName}`, JSON.stringify(card));
+	const cards = await getAllCards();
+	res.status(201).send({
+		edited: req.body,
+		cards: cards
+	});
+});
+
+// DELETE
+app.delete('/deleteCard', async (req, res) => {
+	const { productName } = req.query;
+	const deleted = await client.get(`card:${productName}`);
+	await client.del(`card:${productName}`);
+	const cards = await getAllCards();
+	res.status(200).send({
+		deleted: JSON.parse(deleted),
+		cards: cards
+	});
+});
+
 
 app.listen(port, () => console.log(`Running on port: ${port}`));
