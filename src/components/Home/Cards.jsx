@@ -13,9 +13,9 @@ export default function Cards({ cards, query, deleteCard, editCard}) {
 
   return (
     <>
-      <Button onClick={toggleAscending} className='m-2'>Sort by Creation Time</Button>
+      <Button onClick={toggleAscending} className='m-2'>{ascending ? 'Sort by Newest First' : 'Sort by Oldest First'}</Button>
       {ascending ?
-        <Container fluid className='m-auto'>
+        <Container fluid>
           <Row>
             {cards.filter(card => card.productName.includes(query.toLowerCase())).sort((a, b) => new Date(a.creationTime) - new Date(b.creationTime)).map(data =>
               <ProductCard key={data.productName} data={data} deleteCard={deleteCard} editCard={editCard}/>

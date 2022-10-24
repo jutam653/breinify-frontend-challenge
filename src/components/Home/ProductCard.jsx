@@ -34,8 +34,8 @@ export default function ProductCard({ data, deleteCard, editCard }) {
   };
 
   return (
-    <Col>
-      <Card style={{ width: '15rem' }} className='m-2'>
+    <Col sm={6} md={3}>
+      <Card className='mb-3'>
         <Card.Img variant="top" src={productImg} />
         <Card.Body>
           {edit ?

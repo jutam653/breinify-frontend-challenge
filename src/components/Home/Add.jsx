@@ -30,7 +30,7 @@ export default function Add({ addCard }) {
               <Form.Control
                 required
                 type='text'
-                placeholder='product name'
+                placeholder='Enter product name'
                 onChange={(event) => setName(event.target.value)}>
               </Form.Control>
             </Form.Group>
@@ -39,7 +39,7 @@ export default function Add({ addCard }) {
               <Form.Control
                 required
                 type='text'
-                placeholder='description'
+                placeholder='Enter product description'
                 onChange={(event) => setDescription(event.target.value)}>
               </Form.Control>
             </Form.Group>
