@@ -38,18 +38,15 @@ app.get('/', (req, res) => {
 // GET
 app.get('/getCards', async (req, res) => {
 	const cards = await getAllCards();
-	console.log(cards);
 	res.status(200).send(cards);
 });
 
 // POST
 app.post('/postCard', async (req, res) => {
 	const { productName } = req.body;
-	console.log(req.body);
-	console.log(productName);
 	const { keys } = await client.scan(0, 'MATCH *card*');
 	if (keys.includes(`card:${productName}`)) {
-		res.status(404).send('Card already exists!');
+		res.status(400).send('Card already exists!');
 	} else {
 		await client.set(`card:${productName}`, JSON.stringify(req.body));
 		const cards = await getAllCards();

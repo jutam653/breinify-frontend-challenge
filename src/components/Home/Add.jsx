@@ -9,9 +9,8 @@ export default function Add({ addCard }) {
   const [description, setDescription] = useState('');
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    addCard(name, description);
     setShowModal(false);
+    addCard(name, description);
   };
 
   const handleClose = () => setShowModal(false);
@@ -19,13 +18,13 @@ export default function Add({ addCard }) {
 
   return (
     <>
-      <Button onClick={handleOpen} className='ms-2'>Add a Card!</Button>
+      <Button onClick={handleOpen} className='ms-3'>Add a Card!</Button>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Card Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Product Name</Form.Label>
               <Form.Control
@@ -44,16 +43,11 @@ export default function Add({ addCard }) {
                 onChange={(event) => setDescription(event.target.value)}>
               </Form.Control>
             </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type='submit'
-            onClick={handleSubmit}
-            >
+          <Button type='submit' className='mt-3'>
             Submit
           </Button>
-        </Modal.Footer>
+          </Form>
+        </Modal.Body>
       </Modal>
     </>
   )

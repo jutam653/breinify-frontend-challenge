@@ -35,17 +35,18 @@ export default function ProductCard({ data, deleteCard, editCard }) {
 
   return (
     <Col>
-      <Card style={{ width: '15rem' }}>
+      <Card style={{ width: '15rem' }} className='m-2'>
         <Card.Img variant="top" src={productImg} />
         <Card.Body>
           {edit ?
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>Product Name</Form.Label>
                 <Form.Control
                   type='text'
                   value={name}
-                  onChange={(event) => setName(event.target.value)}>
+                  onChange={(event) => setName(event.target.value)}
+                  required>
                 </Form.Control>
               </Form.Group>
               <Form.Group>
@@ -53,10 +54,11 @@ export default function ProductCard({ data, deleteCard, editCard }) {
                 <Form.Control
                   type='url'
                   value={image}
-                  onChange={(event) => setImage(event.target.value)}>
+                  onChange={(event) => setImage(event.target.value)}
+                  required>
                 </Form.Control>
               </Form.Group>
-              <Button type='submit' onClick={handleSubmit} className='mt-3'>Submit</Button>
+              <Button type='submit' className='mt-3'>Submit</Button>
             </Form>
             :
             <>

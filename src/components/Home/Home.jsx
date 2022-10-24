@@ -3,6 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Cards from './Cards';
 import Add from './Add';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const Title = styled.h1`
+	margin-left: 1rem
+`;
 
 export function Home() {
 	const [cards, setCards] = useState([]);
@@ -39,13 +44,12 @@ export function Home() {
 
 	return (
 		<div>
-			<h1>Breinify Challenge</h1>
-			<Form>
+			<Title>Breinify Challenge</Title>
+			<Form className='mx-3'>
 				<Form.Control
 					type='text'
 					placeholder='search'
-					onChange={(event) => setQuery(event.target.value)}
-					className='mx-2'>
+					onChange={(event) => setQuery(event.target.value)}>
 				</Form.Control>
 			</Form>
 			<Add addCard={addCard}/>
